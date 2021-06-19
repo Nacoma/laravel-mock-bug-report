@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->make(FooContract::class)
         );
 
-        $this->app->instance(FooContract::class, $decorator);
+        $this->app->singleton(FooContract::class, fn () => $decorator);
     }
 
     /**
