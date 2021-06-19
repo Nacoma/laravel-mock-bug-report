@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Foo;
 use App\FooContract;
+use App\FooDecorator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,7 +16,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(FooContract::class, Foo::class);
+        $this->app->bind(FooContract::class, fn () => new Foo('any'));
+
+        $decorator = new FooDecorator(
+            $this->app->make(FooContract::class)
+        );
+
+        $this->app->instance(FooContract::class, $decorator);
     }
 
     /**
